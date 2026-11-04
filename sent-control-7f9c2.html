@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#06101d">
+  <title>Sent Control Center</title>
+  <link rel="stylesheet" href="/sent-control.css?v=sent-admin-10">
+</head>
+<body>
+  <div class="background-grid" aria-hidden="true"></div>
+  <div class="orb orb-one" aria-hidden="true"></div>
+  <div class="orb orb-two" aria-hidden="true"></div>
+
+  <main class="shell">
+    <header class="header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">S</div>
+        <div>
+          <strong>Sent Control Center <em class="version-badge">V8</em></strong>
+          <span>FREE + VIP license administration</span>
+        </div>
+      </div>
+      <span class="private-badge"><i></i> PRIVATE</span>
+    </header>
+
+    <section id="loginCard" class="card login-card">
+      <div class="login-icon" aria-hidden="true">⌁</div>
+      <div class="section-heading login-heading">
+        <span class="eyebrow">ADMIN AUTHENTICATION</span>
+        <h1>Đăng nhập quản trị</h1>
+        <p>Chỉ trang bí mật này mới có quyền tạo key bán/VIP.</p>
+      </div>
+
+      <label class="field">
+        <span>Admin token</span>
+        <div class="password-wrap">
+          <input id="adminToken" type="password" autocomplete="off"
+                 placeholder="Dán ADMIN_TOKEN tại đây">
+          <button id="toggleToken" type="button" aria-label="Hiện hoặc ẩn token">Hiện</button>
+        </div>
+      </label>
+
+      <label class="remember">
+        <input id="rememberSession" type="checkbox" checked>
+        <span>Ghi nhớ trong tab hiện tại</span>
+      </label>
+
+      <button id="loginBtn" class="primary" type="button">
+        <span>Mở bảng điều khiển</span>
+        <b aria-hidden="true">→</b>
+      </button>
+
+      <p id="loginMessage" class="message" aria-live="polite"></p>
+    </section>
+
+    <section id="dashboard" class="dashboard hidden">
+      <section class="command-bar">
+        <div class="command-title"><span class="live-dot"></span><div><strong>Sent Tweaks Admin</strong><small>Control Center • Production • V10 PREMIUM</small></div></div>
+        <div class="command-actions"><button id="topRefreshBtn" class="icon-action" type="button">↻ <span>Làm mới</span></button><button id="topLogoutBtn" class="icon-action danger-soft" type="button">⎋ <span>Đăng xuất</span></button></div>
+      </section>
+      
+      <section class="premium-overview">
+        <div class="premium-copy">
+          <span class="premium-kicker"><i></i> SENT ADMIN • LIVE CONTROL</span>
+          <h2>Trung tâm điều hành hệ thống</h2>
+          <p>Theo dõi key, thiết bị, lượt nhận, VIP và an ninh từ một giao diện duy nhất.</p>
+        </div>
+        <div class="premium-actions">
+          <button id="premiumRefreshBtn" type="button" class="premium-action">↻ Đồng bộ dữ liệu</button>
+          <span class="premium-live"><i></i> LIVE</span>
+        </div>
+      </section>
+      <section class="system-strip"><div><span class="pulse"></span><strong>API Admin</strong><small id="apiHealth">Đang kiểm tra</small></div><div><strong>Dữ liệu</strong><small id="dataFreshness">Chưa đồng bộ</small></div><div><strong>Múi giờ</strong><small>Việt Nam • UTC+7</small></div><div><strong>Phiên quản trị</strong><small>Đã xác thực</small></div></section>
+      <nav class="admin-nav" aria-label="Điều hướng quản trị"><span class="nav-label">CONTROL</span>
+        <a href="#overview"><span>Tổng quan</span><small>Overview</small></a>
+        <a href="#security"><span>Bảo mật</span><small>Security</small></a>
+        <a href="#free-keys"><span>Free</span><small>Licenses</small></a>
+        <a href="#vip-keys"><span>VIP</span><small>Premium</small></a>
+        <a href="#license-tools"><span>Công cụ</span><small>Utilities</small></a>
+      </nav>
+
+      <section id="overview" class="dashboard-hero">
+        <div>
+          <span class="eyebrow">FREE / LINK4M ANALYTICS</span>
+          <h1>Tổng quan hệ thống key Free</h1>
+          <p>Trang Get Key công khai vẫn giữ nguyên. Các số dưới đây chỉ tính phiên Link4m đã hoàn tất; key VIP không được trộn vào thống kê Free.</p>
+        </div>
+
+        <button id="refreshStatsBtn" class="secondary refresh-button" type="button">
+          <span aria-hidden="true">↻</span>
+          <span>Làm mới tất cả</span>
+        </button>
+      </section>
+
+      <div class="stats-grid premium-stats" aria-live="polite">
+        <article class="stat-card stat-primary">
+          <div class="stat-icon" aria-hidden="true">↗</div>
+          <div>
+            <span>Lượt nhận thành công</span>
+            <strong id="statCompleted">—</strong>
+            <small>Phiên Link4m hoàn tất hợp lệ</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">#</div>
+          <div>
+            <span>Tổng key Link4m</span>
+            <strong id="statTotal">—</strong>
+            <small>Key Free duy nhất từ trước đến nay</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">＋</div>
+          <div>
+            <span>Key hôm nay</span>
+            <strong id="statToday">—</strong>
+            <small id="statTrend">Theo múi giờ Việt Nam</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">−</div>
+          <div>
+            <span>Key hôm qua</span>
+            <strong id="statYesterday">—</strong>
+            <small>00:00 → 23:59 UTC+7</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">✓</div>
+          <div>
+            <span>Free hoạt động</span>
+            <strong id="statActive">—</strong>
+            <small>Chưa hết hạn, chưa thu hồi</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">⌛</div>
+          <div>
+            <span>Free hết hạn</span>
+            <strong id="statExpired">—</strong>
+            <small>Không gồm key đã thu hồi</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">×</div>
+          <div>
+            <span>Free thu hồi</span>
+            <strong id="statRevoked">—</strong>
+            <small>Chỉ tính key sinh từ Link4m</small>
+          </div>
+        </article>
+      </div>
+
+      <p id="statsMessage" class="message stats-message" aria-live="polite"></p>
+
+      <section class="card intelligence-card"><div class="section-heading compact"><span class="eyebrow">SYSTEM INTELLIGENCE</span><h2>Tình trạng vận hành</h2><p>Tóm tắt tự động từ dữ liệu thật của server.</p></div><div class="insight-grid"><article><span>Free khả dụng</span><strong id="freeHealth">—</strong><small id="freeHealthNote">Đang tính</small></article><article><span>VIP khả dụng</span><strong id="vipHealth">—</strong><small id="vipHealthNote">Đang tính</small></article><article><span>Xu hướng hôm nay</span><strong id="trendHealth">—</strong><small id="trendHealthNote">So với hôm qua</small></article><article><span>An ninh</span><strong id="securityHealth">—</strong><small id="securityHealthNote">Chờ Sentinel</small></article></div></section>
+      <section id="security" class="card security-card">
+        <div class="section-heading compact row-heading">
+          <div>
+            <span class="eyebrow">SENTINEL SECURITY CENTER</span>
+            <h2>DDoS &amp; bảo mật 24 giờ</h2>
+            <p>Theo dõi sự kiện bị chặn, client bất thường và block đang hoạt động từ Sentinel.</p>
+          </div>
+          <span id="securityUpdated" class="last-updated">Chưa cập nhật</span>
+        </div>
+        <div class="security-grid">
+          <article class="security-metric"><span>Sự kiện bảo mật</span><strong id="securityEvents">—</strong><small>24 giờ gần nhất</small></article>
+          <article class="security-metric"><span>Client bất thường</span><strong id="securityClients">—</strong><small>Client duy nhất</small></article>
+          <article class="security-metric"><span>Block đang chạy</span><strong id="securityBlocks">—</strong><small>Đang bị Sentinel chặn</small></article>
+          <article class="security-metric"><span>Trạng thái</span><strong id="securityStatus" class="security-ok">ONLINE</strong><small id="securityWindow">Sentinel V2</small></article>
+        </div>
+        <div class="security-columns">
+          <div>
+            <h3>Lý do chặn nhiều nhất</h3>
+            <div id="securityReasons" class="security-list"><div class="security-empty">Chưa có dữ liệu.</div></div>
+          </div>
+          <div>
+            <h3>Sự kiện gần đây</h3>
+            <div id="securityRecent" class="security-list"><div class="security-empty">Chưa có dữ liệu.</div></div>
+          </div>
+        </div>
+        <p id="securityMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <section id="free-keys" class="dashboard-hero" style="margin-top:18px">
+        <div>
+          <span class="eyebrow">ADMIN FREE LICENSES</span>
+          <h1>Tạo key Free thủ công</h1>
+          <p>Chỉ Admin tạo được ở đây. Key này dùng cho app Free nhưng không được tính vào số liệu người vượt Link4m.</p>
+        </div>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="card create-card">
+          <div class="section-heading compact">
+            <span class="eyebrow">CREATE FREE LICENSE</span>
+            <h2>Tạo key Free</h2>
+            <p>Phù hợp khi bạn cần cấp key Free trực tiếp mà không bắt người dùng vượt Link4m.</p>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Thời hạn Free</span>
+              <select id="freePlanHours">
+                <option value="24">1 ngày</option>
+                <option value="72">3 ngày</option>
+                <option value="168">7 ngày</option>
+                <option value="720">30 ngày</option>
+                <option value="12">12 giờ</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Giới hạn thiết bị</span>
+              <select id="freeMaxDevices">
+                <option value="1">1 thiết bị</option>
+                <option value="2">2 thiết bị</option>
+                <option value="3">3 thiết bị</option>
+                <option value="5">5 thiết bị</option>
+                <option value="10">10 thiết bị</option>
+                <option value="0">Không giới hạn</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Số lượng key</span>
+              <input id="freeKeyCount" type="number" min="1" max="20" value="1" inputmode="numeric">
+            </label>
+          </div>
+
+          <div class="format-note">
+            <span class="format-dot"></span>
+            <code>SENT-FREEX-XXXXX-XXXXX</code>
+          </div>
+
+          <button id="freeCreateBtn" class="primary" type="button">
+            <span aria-hidden="true">＋</span>
+            <span>Tạo key Free</span>
+          </button>
+
+          <p id="freeCreateMessage" class="message" aria-live="polite"></p>
+        </section>
+
+        <section class="card output-card">
+          <div class="section-heading compact row-heading">
+            <div>
+              <span class="eyebrow">FREE SESSION OUTPUT</span>
+              <h2>Key Free vừa tạo</h2>
+            </div>
+
+            <button id="freeCopyAllBtn" class="secondary small" type="button" disabled>
+              Sao chép tất cả
+            </button>
+          </div>
+
+          <div id="freeEmptyResult" class="empty-state">
+            <div>
+              <span aria-hidden="true">◇</span>
+              <strong>Chưa có key Free mới</strong>
+              <p>Key Free do Admin tạo trong phiên này sẽ xuất hiện tại đây.</p>
+            </div>
+          </div>
+
+          <div id="freeResultList" class="result-list hidden"></div>
+        </section>
+      </div>
+
+      <section id="vip-keys" class="dashboard-hero" style="margin-top:18px">
+        <div>
+          <span class="eyebrow">VIP / PAID LICENSES</span>
+          <h1>Key bán / VIP</h1>
+          <p>Chỉ ADMIN_TOKEN mới tạo được. Key Free/Link4m sẽ bị server từ chối khi đăng nhập app VIP.</p>
+        </div>
+      </section>
+
+      <div class="stats-grid" aria-live="polite">
+        <article class="stat-card stat-primary">
+          <div class="stat-icon" aria-hidden="true">★</div>
+          <div>
+            <span>Tổng key VIP</span>
+            <strong id="vipStatTotal">—</strong>
+            <small>Chỉ key được đánh dấu VIP trong D1</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">✓</div>
+          <div>
+            <span>VIP hoạt động</span>
+            <strong id="vipStatActive">—</strong>
+            <small>Chưa hết hạn, chưa thu hồi</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">⌛</div>
+          <div>
+            <span>VIP hết hạn</span>
+            <strong id="vipStatExpired">—</strong>
+            <small>Không gồm key thu hồi</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true">×</div>
+          <div>
+            <span>VIP thu hồi</span>
+            <strong id="vipStatRevoked">—</strong>
+            <small>Vẫn được giữ lịch sử VIP</small>
+          </div>
+        </article>
+      </div>
+
+      <p id="vipStatsMessage" class="message stats-message" aria-live="polite"></p>
+
+      <div class="dashboard-grid">
+        <section class="card create-card">
+          <div class="section-heading compact">
+            <span class="eyebrow">CREATE VIP LICENSE</span>
+            <h2>Tạo key bán / VIP</h2>
+            <p>Key tạo tại đây chỉ đăng nhập được app VIP. Trang Get Key Free không thể tạo loại key này.</p>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Thời hạn VIP</span>
+              <select id="planHours">
+                <option value="24">1 ngày</option>
+                <option value="72">3 ngày</option>
+                <option value="168">7 ngày</option>
+                <option value="720">30 ngày</option>
+                <option value="2160">90 ngày</option>
+                <option value="12">12 giờ</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Giới hạn thiết bị</span>
+              <select id="maxDevices">
+                <option value="1">1 thiết bị</option>
+                <option value="2">2 thiết bị</option>
+                <option value="3">3 thiết bị</option>
+                <option value="5">5 thiết bị</option>
+                <option value="10">10 thiết bị</option>
+                <option value="0">Không giới hạn</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Số lượng key</span>
+              <input id="keyCount" type="number" min="1" max="20" value="1" inputmode="numeric">
+            </label>
+          </div>
+
+          <label class="field" style="margin-top:0;margin-bottom:14px">
+            <span>Ghi chú khách hàng (tùy chọn)</span>
+            <input id="vipNote" type="text" maxlength="160"
+                   placeholder="Ví dụ: Khách A • gói 30 ngày">
+          </label>
+
+          <div class="format-note">
+            <span class="format-dot"></span>
+            <code>SENT-VIPXX-XXXXX-XXXXX</code>
+          </div>
+
+          <button id="createBtn" class="primary" type="button">
+            <span aria-hidden="true">★</span>
+            <span>Tạo key VIP</span>
+          </button>
+
+          <p id="createMessage" class="message" aria-live="polite"></p>
+        </section>
+
+        <section class="card output-card">
+          <div class="section-heading compact row-heading">
+            <div>
+              <span class="eyebrow">VIP SESSION OUTPUT</span>
+              <h2>Key VIP vừa tạo</h2>
+            </div>
+
+            <button id="copyAllBtn" class="secondary small" type="button" disabled>
+              Sao chép tất cả
+            </button>
+          </div>
+
+          <div id="emptyResult" class="empty-state">
+            <div>
+              <span aria-hidden="true">◇</span>
+              <strong>Chưa có key VIP mới</strong>
+              <p>Key bán được tạo trong phiên này sẽ xuất hiện tại đây.</p>
+            </div>
+          </div>
+
+          <div id="resultList" class="result-list hidden"></div>
+        </section>
+      </div>
+
+      <section class="card link4m-card">
+        <div class="section-heading compact row-heading">
+          <div>
+            <span class="eyebrow">RECENT VIP KEYS</span>
+            <h2>Key bán / VIP gần đây</h2>
+            <p>Danh sách riêng, không trộn với key Link4m.</p>
+          </div>
+
+          <span id="vipLastUpdated" class="last-updated">Chưa cập nhật</span>
+        </div>
+
+        <div class="table-shell">
+          <div class="table-head" aria-hidden="true">
+            <span>Key / ghi chú</span>
+            <span>Trạng thái</span>
+            <span>Thiết bị</span>
+            <span>Thời gian tạo</span>
+          </div>
+
+          <div id="vipRecentEmpty" class="recent-empty">Chưa có key VIP nào.</div>
+          <div id="vipRecentList" class="recent-list hidden"></div>
+        </div>
+      </section>
+
+      <section class="card link4m-card">
+        <div class="section-heading compact row-heading">
+          <div>
+            <span class="eyebrow">RECENT FREE / LINK4M KEYS</span>
+            <h2>Key Free được tạo gần đây</h2>
+            <p>Danh sách này vẫn chỉ lấy từ phiên Link4m đã hoàn tất.</p>
+          </div>
+
+          <span id="lastUpdated" class="last-updated">Chưa cập nhật</span>
+        </div>
+
+        <div class="table-shell">
+          <div class="table-head" aria-hidden="true">
+            <span>Key</span>
+            <span>Trạng thái</span>
+            <span>Thiết bị</span>
+            <span>Thời gian tạo</span>
+          </div>
+
+          <div id="recentEmpty" class="recent-empty">Chưa có key Link4m nào được tạo.</div>
+          <div id="recentList" class="recent-list hidden"></div>
+        </div>
+      </section>
+
+      <section id="license-tools" class="card revoke-card">
+        <div class="section-heading compact">
+          <span class="eyebrow">REVOKE LICENSE</span>
+          <h2>Thu hồi key</h2>
+          <p>Dùng chung cho cả key Free và VIP. Key thu hồi không thể xác thực lại.</p>
+        </div>
+
+        <div class="revoke-row">
+          <input id="revokeKey" type="text"
+                 placeholder="SENT-XXXXX-XXXXX-XXXXX"
+                 autocomplete="off"
+                 autocapitalize="characters"
+                 spellcheck="false">
+
+          <button id="revokeBtn" class="danger" type="button">Thu hồi</button>
+        </div>
+
+        <p id="revokeMessage" class="message" aria-live="polite"></p>
+      </section>
+
+      <footer>
+        <span>Sent Tweaks • Admin only • FREE/VIP separated server-side</span>
+        <button id="logoutBtn" class="text-button" type="button">Đăng xuất</button>
+      </footer>
+    </section>
+  </main>
+
+  <script src="/sent-control.js?v=sent-admin-10" defer></script>
+</body>
+</html>

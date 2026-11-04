@@ -1,0 +1,13 @@
+{
+  "name": "sent-tweaks-auth-worker",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy --config wrangler.jsonc",
+    "migrate": "wrangler d1 migrations apply DB --remote --config wrangler.jsonc",
+    "dev": "wrangler dev --config wrangler.jsonc",
+    "db:ddos": "wrangler d1 migrations apply DB --remote --config wrangler.jsonc"
+  },
+  "devDependencies": {
+    "wrangler": "^4.36.0"
+  }
+}
